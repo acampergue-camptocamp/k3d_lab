@@ -1,9 +1,11 @@
 name: Antora Doc 
 
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
 on:
   push:
-    branches: 
-      - master
+    branches: [ main ]
+
 env:
   SITE_DIR: 'site'
 jobs:
