@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>K3D :: k3d Laboratory</title>
+    <link rel="canonical" href="https://acampergue-camptocamp.github.io/k3d_lab/k3d_lab/0.1.0/tutorials.html">
+    <meta name="generator" content="Antora 2.3.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="icon" href="../../_/img/c2c_favicon.png" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://acampergue-camptocamp.github.io/k3d_lab">k3d Laboratory</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="k3d_lab" data-version="0.1.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">K3B Lab</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Introduction</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="tutorials.html">Tutorials</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">K3B Lab</span>
+    <span class="version">0.1.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">K3B Lab</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">0.1.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">K3B Lab</a></li>
+    <li><a href="tutorials.html">Tutorials</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">K3D</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://rancher.com/docs/k3s/latest/en/networking/" class="bare">https://rancher.com/docs/k3s/latest/en/networking/</a></p>
+</div>
+<div class="paragraph">
+<p>yay -S aur/rancher-k3d-bin</p>
+</div>
+<div class="paragraph">
+<p>k3d completion zsh &gt; .zsh/completion/_k3d</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_cluster_installation"><a class="anchor" href="#_cluster_installation"></a>Cluster Installation</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+k3d cluster create demo --servers 3 --agents 3
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+NAME                ROLE           CLUSTER   STATUS
+k3d-demo-agent-0    agent          demo      running
+k3d-demo-agent-1    agent          demo      running
+k3d-demo-agent-2    agent          demo      running
+k3d-demo-server-0   server         demo      running
+k3d-demo-server-1   server         demo      running
+k3d-demo-server-2   server         demo      running
+k3d-demo-serverlb   loadbalancer   demo      running
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+k get all --all-namespaces -o wide
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+NAMESPACE     NAME                                         READY   STATUS      RESTARTS   AGE     IP          NODE                NOMINATED NODE   READINESS GATES
+kube-system   pod/local-path-provisioner-6d59f47c7-n94k5   1/1     Running     0          5m17s   10.42.3.2   k3d-demo-agent-1    &lt;none&gt;           &lt;none&gt;
+kube-system   pod/metrics-server-7566d596c8-42rx8          1/1     Running     0          5m17s   10.42.4.2   k3d-demo-agent-2    &lt;none&gt;           &lt;none&gt;
+kube-system   pod/helm-install-traefik-wrgfc               0/1     Completed   0          5m17s   10.42.1.2   k3d-demo-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-hwfqb                      2/2     Running     0          5m      10.42.2.3   k3d-demo-agent-0    &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-lmphh                      2/2     Running     0          5m      10.42.4.3   k3d-demo-agent-2    &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-hxwkd                      2/2     Running     0          5m      10.42.1.4   k3d-demo-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-64q2h                      2/2     Running     0          5m      10.42.3.3   k3d-demo-agent-1    &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-tjmkn                      2/2     Running     0          5m      10.42.0.2   k3d-demo-server-2   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-jkt9w                      2/2     Running     0          5m      10.42.5.2   k3d-demo-server-1   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/coredns-8655855d6-smrdq                  1/1     Running     0          5m17s   10.42.2.2   k3d-demo-agent-0    &lt;none&gt;           &lt;none&gt;
+kube-system   pod/traefik-758cd5fc85-jw5mn                 1/1     Running     0          5m      10.42.1.3   k3d-demo-server-0   &lt;none&gt;           &lt;none&gt;
+NAMESPACE     NAME                         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE     SELECTOR
+default       service/kubernetes           ClusterIP      10.43.0.1       &lt;none&gt;        443/TCP                      5m32s   &lt;none&gt;
+kube-system   service/kube-dns             ClusterIP      10.43.0.10      &lt;none&gt;        53/UDP,53/TCP,9153/TCP       5m31s   k8s-app=kube-dns
+kube-system   service/metrics-server       ClusterIP      10.43.147.15    &lt;none&gt;        443/TCP                      5m30s   k8s-app=metrics-server
+kube-system   service/traefik-prometheus   ClusterIP      10.43.24.249    &lt;none&gt;        9100/TCP                     5m1s    app=traefik,release=traefik
+kube-system   service/traefik              LoadBalancer   10.43.136.250   172.20.0.3    80:30296/TCP,443:30041/TCP   5m1s    app=traefik,release=traefik
+NAMESPACE     NAME                           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE    CONTAINERS               IMAGES                                                SELECTOR
+kube-system   daemonset.apps/svclb-traefik   6         6         6       6            6           &lt;none&gt;          5m1s   lb-port-80,lb-port-443   rancher/klipper-lb:v0.1.2,rancher/klipper-lb:v0.1.2   app=svclb-traefik
+NAMESPACE     NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS               IMAGES                                   SELECTOR
+kube-system   deployment.apps/local-path-provisioner   1/1     1            1           5m30s   local-path-provisioner   rancher/local-path-provisioner:v0.0.11   app=local-path-provisioner
+kube-system   deployment.apps/metrics-server           1/1     1            1           5m30s   metrics-server           rancher/metrics-server:v0.3.6            k8s-app=metrics-server
+kube-system   deployment.apps/coredns                  1/1     1            1           5m31s   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns
+kube-system   deployment.apps/traefik                  1/1     1            1           5m1s    traefik                  rancher/library-traefik:1.7.19           app=traefik,release=traefik
+NAMESPACE     NAME                                               DESIRED   CURRENT   READY   AGE     CONTAINERS               IMAGES                                   SELECTOR
+kube-system   replicaset.apps/local-path-provisioner-6d59f47c7   1         1         1       5m17s   local-path-provisioner   rancher/local-path-provisioner:v0.0.11   app=local-path-provisioner,pod-template-hash=6d59f47c7
+kube-system   replicaset.apps/metrics-server-7566d596c8          1         1         1       5m17s   metrics-server           rancher/metrics-server:v0.3.6            k8s-app=metrics-server,pod-template-hash=7566d596c8
+kube-system   replicaset.apps/coredns-8655855d6                  1         1         1       5m17s   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns,pod-template-hash=8655855d6
+kube-system   replicaset.apps/traefik-758cd5fc85                 1         1         1       5m1s    traefik                  rancher/library-traefik:1.7.19           app=traefik,pod-template-hash=758cd5fc85,release=traefik
+NAMESPACE     NAME                             COMPLETIONS   DURATION   AGE     CONTAINERS   IMAGES                        SELECTOR
+kube-system   job.batch/helm-install-traefik   1/1           16s        5m30s   helm         rancher/klipper-helm:v0.2.5   controller-uid=b8443b3f-d8b3-4dc4-9c00-5b03ec272ea5
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+k3d cluster create demo --servers 3 --agents 3 --k3s-server-arg "--disable=traefik"
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+k3d node list
+NAME                ROLE           CLUSTER   STATUS
+k3d-demo-agent-0    agent          demo      running
+k3d-demo-agent-1    agent          demo      running
+k3d-demo-agent-2    agent          demo      running
+k3d-demo-server-0   server         demo      running
+k3d-demo-server-1   server         demo      running
+k3d-demo-server-2   server         demo      running
+k3d-demo-serverlb   loadbalancer   demo      running
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+k get all --all-namespaces -o wide
+---</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE   IP          NODE               NOMINATED NODE   READINESS GATES
+kube-system   pod/local-path-provisioner-6d59f47c7-drgsf   1/1     Running   0          11m   10.42.3.2   k3d-demo-agent-1   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/metrics-server-7566d596c8-dj2p2          1/1     Running   0          11m   10.42.5.2   k3d-demo-agent-2   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/coredns-8655855d6-jnm4j                  1/1     Running   0          11m   10.42.2.2   k3d-demo-agent-0   &lt;none&gt;           &lt;none&gt;
+NAMESPACE     NAME                     TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                  AGE   SELECTOR
+default       service/kubernetes       ClusterIP   10.43.0.1      &lt;none&gt;        443/TCP                  12m   &lt;none&gt;
+kube-system   service/kube-dns         ClusterIP   10.43.0.10     &lt;none&gt;        53/UDP,53/TCP,9153/TCP   12m   k8s-app=kube-dns
+kube-system   service/metrics-server   ClusterIP   10.43.188.77   &lt;none&gt;        443/TCP                  12m   k8s-app=metrics-server
+NAMESPACE     NAME                                     READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS               IMAGES                                   SELECTOR
+kube-system   deployment.apps/local-path-provisioner   1/1     1            1           12m   local-path-provisioner   rancher/local-path-provisioner:v0.0.11   app=local-path-provisioner
+kube-system   deployment.apps/metrics-server           1/1     1            1           12m   metrics-server           rancher/metrics-server:v0.3.6            k8s-app=metrics-server
+kube-system   deployment.apps/coredns                  1/1     1            1           12m   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns
+NAMESPACE     NAME                                               DESIRED   CURRENT   READY   AGE   CONTAINERS               IMAGES                                   SELECTOR
+kube-system   replicaset.apps/local-path-provisioner-6d59f47c7   1         1         1       11m   local-path-provisioner   rancher/local-path-provisioner:v0.0.11   app=local-path-provisioner,pod-template-hash=6d59f47c7
+kube-system   replicaset.apps/metrics-server-7566d596c8          1         1         1       11m   metrics-server           rancher/metrics-server:v0.3.6            k8s-app=metrics-server,pod-template-hash=7566d596c8
+kube-system   replicaset.apps/coredns-8655855d6                  1         1         1       11m   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns,pod-template-hash=8655855d6
+---</code></pre>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
