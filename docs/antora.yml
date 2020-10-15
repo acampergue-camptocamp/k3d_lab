@@ -1,0 +1,5 @@
+name: k3d_lab
+title: K3B Lab
+version: 0.1.0
+nav:
+- modules/ROOT/nav.adoc

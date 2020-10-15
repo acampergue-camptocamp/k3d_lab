@@ -1,0 +1,20 @@
+site:
+  title: k3d Laboratory
+  # the 404 page and sitemap files only get generated when the url property is set
+  url: https://acampergue-camptocamp.github.io/k3d_lab/
+  start_page: k3d_lab::index.adoc
+content:
+  sources:
+  - url: ./
+    branches: HEAD
+    edit_url: false
+    start_path: docs
+ui:
+  bundle:
+    url: https://github.com/camptocamp/antora-ui/releases/download/LATEST/ui-bundle.zip
+    snapshot: true
+  supplemental_files:
+  - path: ui.yml
+    contents: |
+      static_files: [ .nojekyll ]
+  - path: .nojekyll
