@@ -81,54 +81,88 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">K3D</h1>
-<div id="preamble">
+<div class="sect1">
+<h2 id="_initialize_your_environment"><a class="anchor" href="#_initialize_your_environment"></a>Initialize your environment</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="https://rancher.com/docs/k3s/latest/en/networking/" class="bare">https://rancher.com/docs/k3s/latest/en/networking/</a></p>
+<div class="sect2">
+<h3 id="_install_the_tool"><a class="anchor" href="#_install_the_tool"></a>Install the tool</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yay -S aur/rancher-k3d-bin</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_the_autocompletion"><a class="anchor" href="#_configure_the_autocompletion"></a>Configure the autocompletion</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k3d completion zsh &gt; .zsh/completion/_k3d</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>yay -S aur/rancher-k3d-bin</p>
+<p><a href="https://rancher.com/docs/k3s/latest/en/installation/" class="bare">https://rancher.com/docs/k3s/latest/en/installation/</a>
+<a href="https://rancher.com/docs/k3s/latest/en/networking/" class="bare">https://rancher.com/docs/k3s/latest/en/networking/</a></p>
 </div>
-<div class="paragraph">
-<p>k3d completion zsh &gt; .zsh/completion/_k3d</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cluster_installation"><a class="anchor" href="#_cluster_installation"></a>Cluster Installation</h2>
+<h2 id="_create_a_standard_demo_cluster_with_3_servers_and_3_agents"><a class="anchor" href="#_create_a_standard_demo_cluster_with_3_servers_and_3_agents"></a>Create a standard demo cluster with 3 servers and 3 agents</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-k3d cluster create demo --servers 3 --agents 3
----</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k3d cluster create demo --servers 3 --agents 3</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-NAME                ROLE           CLUSTER   STATUS
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                ROLE           CLUSTER   STATUS
 k3d-demo-agent-0    agent          demo      running
 k3d-demo-agent-1    agent          demo      running
 k3d-demo-agent-2    agent          demo      running
 k3d-demo-server-0   server         demo      running
 k3d-demo-server-1   server         demo      running
 k3d-demo-server-2   server         demo      running
-k3d-demo-serverlb   loadbalancer   demo      running
----</code></pre>
+k3d-demo-serverlb   loadbalancer   demo      running</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-k get all --all-namespaces -o wide
----</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl cluster-info</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-NAMESPACE     NAME                                         READY   STATUS      RESTARTS   AGE     IP          NODE                NOMINATED NODE   READINESS GATES
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Kubernetes master is running at https://0.0.0.0:34139
+CoreDNS is running at https://0.0.0.0:34139/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Metrics-server is running at https://0.0.0.0:34139/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k3d node list</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                ROLE           CLUSTER   STATUS
+k3d-demo-agent-0    agent          demo      running
+k3d-demo-agent-1    agent          demo      running
+k3d-demo-agent-2    agent          demo      running
+k3d-demo-server-0   server         demo      running
+k3d-demo-server-1   server         demo      running
+k3d-demo-server-2   server         demo      running
+k3d-demo-serverlb   loadbalancer   demo      running</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k get all --all-namespaces -o wide</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE     NAME                                         READY   STATUS      RESTARTS   AGE     IP          NODE                NOMINATED NODE   READINESS GATES
 kube-system   pod/local-path-provisioner-6d59f47c7-n94k5   1/1     Running     0          5m17s   10.42.3.2   k3d-demo-agent-1    &lt;none&gt;           &lt;none&gt;
 kube-system   pod/metrics-server-7566d596c8-42rx8          1/1     Running     0          5m17s   10.42.4.2   k3d-demo-agent-2    &lt;none&gt;           &lt;none&gt;
 kube-system   pod/helm-install-traefik-wrgfc               0/1     Completed   0          5m17s   10.42.1.2   k3d-demo-server-0   &lt;none&gt;           &lt;none&gt;
@@ -159,21 +193,17 @@ kube-system   replicaset.apps/metrics-server-7566d596c8          1         1    
 kube-system   replicaset.apps/coredns-8655855d6                  1         1         1       5m17s   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns,pod-template-hash=8655855d6
 kube-system   replicaset.apps/traefik-758cd5fc85                 1         1         1       5m1s    traefik                  rancher/library-traefik:1.7.19           app=traefik,pod-template-hash=758cd5fc85,release=traefik
 NAMESPACE     NAME                             COMPLETIONS   DURATION   AGE     CONTAINERS   IMAGES                        SELECTOR
-kube-system   job.batch/helm-install-traefik   1/1           16s        5m30s   helm         rancher/klipper-helm:v0.2.5   controller-uid=b8443b3f-d8b3-4dc4-9c00-5b03ec272ea5
----</code></pre>
+kube-system   job.batch/helm-install-traefik   1/1           16s        5m30s   helm         rancher/klipper-helm:v0.2.5   controller-uid=b8443b3f-d8b3-4dc4-9c00-5b03ec272ea5</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-k3d cluster create demo --servers 3 --agents 3 --k3s-server-arg "--disable=traefik"
----</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k3d cluster create demo --servers 3 --agents 3 --k3s-server-arg "--disable=traefik"</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-k3d node list
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k3d node list
 NAME                ROLE           CLUSTER   STATUS
 k3d-demo-agent-0    agent          demo      running
 k3d-demo-agent-1    agent          demo      running
@@ -181,21 +211,17 @@ k3d-demo-agent-2    agent          demo      running
 k3d-demo-server-0   server         demo      running
 k3d-demo-server-1   server         demo      running
 k3d-demo-server-2   server         demo      running
-k3d-demo-serverlb   loadbalancer   demo      running
----</code></pre>
+k3d-demo-serverlb   loadbalancer   demo      running</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-k get all --all-namespaces -o wide
----</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k get all --all-namespaces -o wide</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
-NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE   IP          NODE               NOMINATED NODE   READINESS GATES
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE   IP          NODE               NOMINATED NODE   READINESS GATES
 kube-system   pod/local-path-provisioner-6d59f47c7-drgsf   1/1     Running   0          11m   10.42.3.2   k3d-demo-agent-1   &lt;none&gt;           &lt;none&gt;
 kube-system   pod/metrics-server-7566d596c8-dj2p2          1/1     Running   0          11m   10.42.5.2   k3d-demo-agent-2   &lt;none&gt;           &lt;none&gt;
 kube-system   pod/coredns-8655855d6-jnm4j                  1/1     Running   0          11m   10.42.2.2   k3d-demo-agent-0   &lt;none&gt;           &lt;none&gt;
@@ -210,8 +236,7 @@ kube-system   deployment.apps/coredns                  1/1     1            1   
 NAMESPACE     NAME                                               DESIRED   CURRENT   READY   AGE   CONTAINERS               IMAGES                                   SELECTOR
 kube-system   replicaset.apps/local-path-provisioner-6d59f47c7   1         1         1       11m   local-path-provisioner   rancher/local-path-provisioner:v0.0.11   app=local-path-provisioner,pod-template-hash=6d59f47c7
 kube-system   replicaset.apps/metrics-server-7566d596c8          1         1         1       11m   metrics-server           rancher/metrics-server:v0.3.6            k8s-app=metrics-server,pod-template-hash=7566d596c8
-kube-system   replicaset.apps/coredns-8655855d6                  1         1         1       11m   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns,pod-template-hash=8655855d6
----</code></pre>
+kube-system   replicaset.apps/coredns-8655855d6                  1         1         1       11m   coredns                  rancher/coredns-coredns:1.6.3            k8s-app=kube-dns,pod-template-hash=8655855d6</code></pre>
 </div>
 </div>
 </div>
