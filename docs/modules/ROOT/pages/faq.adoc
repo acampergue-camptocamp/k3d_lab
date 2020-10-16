@@ -1,0 +1,5 @@
+= FAQ
+
+My cluster does'nt restart !
+
+Can't restart https://github.com/rancher/k3d/issues/286

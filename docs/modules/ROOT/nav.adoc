@@ -1,2 +1,5 @@
 * xref:index.adoc[Introduction]
 * xref:tutorials.adoc[Tutorials]
+* xref:references.adoc[References]
+* xref:faq.adoc[FAQ]
+* xref:howto.adoc[How-to's]
