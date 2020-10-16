@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>K3D :: k3d Laboratory</title>
-    <link rel="canonical" href="https://acampergue-camptocamp.github.io/k3d_lab/k3d_lab/0.1.0/index.html">
+    <title>Untitled :: k3d Laboratory</title>
+    <link rel="canonical" href="https://acampergue-camptocamp.github.io/k3d_lab/k3d_lab/0.1.0/howto.html">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../../_/css/site.css">
     <link rel="icon" href="../../_/img/c2c_favicon.png" type="image/x-icon">
@@ -37,7 +37,7 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
 <ul class="nav-list">
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="index.html">Introduction</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -49,7 +49,7 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="faq.html">FAQ</a>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="howto.html">How-to&#8217;s</a>
   </li>
 </ul>
@@ -79,20 +79,23 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">K3B Lab</a></li>
-    <li><a href="index.html">Introduction</a></li>
+    <li><a href="howto.html">How-to&#8217;s</a></li>
   </ul>
 </nav>
 </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">K3D</h1>
+<div class="sect1">
+<h2 id="_run_an_alternative_service_of_type_loadbalancer"><a class="anchor" href="#_run_an_alternative_service_of_type_loadbalancer"></a>Run an alternative Service of type LoadBalancer ?</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
-k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.</p>
+<p>If you&#8217;re considering running an alternative load-balancer implementation like <a href="https://metallb.universe.tf/">MetalLB</a> or <a href="https://www.envoyproxy.io/docs/envoy/v1.5.0/intro/arch_overview/load_balancing">Envoy</a> (which is a the load-balancer implementation of <a href="https://istio.io/latest/docs/concepts/traffic-management/#load-balancing-options">Istio</a>), wou&#8217;ll need to start the cluster with the <a href="https://rancher.com/docs/k3s/latest/en/networking/#disabling-the-service-lb"><code>--disable servicelb</code> option</a>.</p>
+</div>
+</div>
 </div>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

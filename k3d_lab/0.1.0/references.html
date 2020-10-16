@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>References :: k3d Laboratory</title>
+    <link rel="canonical" href="https://acampergue-camptocamp.github.io/k3d_lab/k3d_lab/0.1.0/references.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="icon" href="../../_/img/c2c_favicon.png" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://acampergue-camptocamp.github.io/k3d_lab">k3d Laboratory</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="k3d_lab" data-version="0.1.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">K3B Lab</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="tutorials.html">Tutorials</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="references.html">References</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="faq.html">FAQ</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="howto.html">How-to&#8217;s</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">K3B Lab</span>
+    <span class="version">0.1.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">K3B Lab</span>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">0.1.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">K3B Lab</a></li>
+    <li><a href="references.html">References</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">References</h1>
+<div class="sect1">
+<h2 id="_why_do_we_have_an_extra_loadbalancer_node"><a class="anchor" href="#_why_do_we_have_an_extra_loadbalancer_node"></a>Why do we have an extra loadbalancer node ?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When we create a cluster with k3d and check the number of nodes with both commands <code>kubectl get nodes</code> and <code>k3d node list</code>, we can see in the later, that we have an additional loadbalancer node that we didn&#8217;t ask explicitely.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ k3d cluster create demolb
+
+$ kubectl get nodes
+NAME                  STATUS   ROLES    AGE   VERSION
+k3d-demolb-server-0   Ready    master   13s   v1.18.9+k3s1
+
+$ k3d node list
+NAME                  ROLE           CLUSTER   STATUS
+k3d-demolb-server-0   server         demolb    running
+k3d-demolb-serverlb   loadbalancer   demolb    running</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This loadbalancer node is an additional componant allowing to redirect the trafic from your host&#8217;s network, to the docker network.
+It is actually a simple nginx server, running in a docker container outside of the kubernetes using port mapping to expose the Kubernetes API port on your host&#8217;s network.</p>
+</div>
+<div class="listingblock">
+<div class="title">the kubectl cluster-info shows the url to access the kubernetes API</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ kubectl cluster-info
+Kubernetes master is running at https://0.0.0.0:40485
+CoreDNS is running at https://0.0.0.0:40485/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Metrics-server is running at https://0.0.0.0:40485/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">nginx running as docker container exposing Kubernetes API</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ docker ps -a
+CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS              PORTS                             NAMES
+c1b252446854        rancher/k3d-proxy:v3.1.1   "/bin/sh -c nginx-pr…"   19 minutes ago      Up 19 minutes       80/tcp, 0.0.0.0:40485-&gt;6443/tcp   k3d-demolb-serverlb
+242515343af3        rancher/k3s:v1.18.9-k3s1   "/bin/k3s server --t…"   19 minutes ago      Up 19 minutes                                         k3d-demolb-server-0</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Containers having an IP address on the docker network</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' k3d-demolb-serverlb
+172.26.0.3
+
+$ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' k3d-demolb-server-0
+172.26.0.2</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_can_i_reach_a_service_in_kubernetes_from_my_host"><a class="anchor" href="#_how_can_i_reach_a_service_in_kubernetes_from_my_host"></a>How can I reach a service in Kubernetes from my host ?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>By default, k3s</p>
+</div>
+<div class="paragraph">
+<p>k get po,svc,daemonset --all-namespaces -o wide|grep</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">k get po,svc,daemonset --all-namespaces -o wide
+NAMESPACE     NAME                                         READY   STATUS      RESTARTS   AGE   IP          NODE                  NOMINATED NODE   READINESS GATES
+kube-system   pod/local-path-provisioner-6d59f47c7-skfgf   1/1     Running     0          24m   10.42.0.2   k3d-demolb-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/metrics-server-7566d596c8-d45mn          1/1     Running     0          24m   10.42.0.5   k3d-demolb-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/helm-install-traefik-smhq9               0/1     Completed   0          24m   10.42.0.4   k3d-demolb-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/svclb-traefik-p9rmc                      2/2     Running     0          23m   10.42.0.6   k3d-demolb-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/coredns-7944c66d8d-zdz46                 1/1     Running     0          24m   10.42.0.3   k3d-demolb-server-0   &lt;none&gt;           &lt;none&gt;
+kube-system   pod/traefik-758cd5fc85-ktns6                 1/1     Running     0          23m   10.42.0.7   k3d-demolb-server-0   &lt;none&gt;           &lt;none&gt;
+
+NAMESPACE     NAME                         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
+default       service/kubernetes           ClusterIP      10.43.0.1       &lt;none&gt;        443/TCP                      24m   &lt;none&gt;
+kube-system   service/kube-dns             ClusterIP      10.43.0.10      &lt;none&gt;        53/UDP,53/TCP,9153/TCP       24m   k8s-app=kube-dns
+kube-system   service/metrics-server       ClusterIP      10.43.152.202   &lt;none&gt;        443/TCP                      24m   k8s-app=metrics-server
+kube-system   service/traefik-prometheus   ClusterIP      10.43.65.243    &lt;none&gt;        9100/TCP                     23m   app=traefik,release=traefik
+kube-system   service/traefik              LoadBalancer   10.43.81.189    172.26.0.2    80:31458/TCP,443:30815/TCP   23m   app=traefik,release=traefik
+
+NAMESPACE     NAME                           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE   CONTAINERS               IMAGES                                                SELECTOR
+kube-system   daemonset.apps/svclb-traefik   1         1         1       1            1           &lt;none&gt;          23m   lb-port-80,lb-port-443   rancher/klipper-lb:v0.1.2,rancher/klipper-lb:v0.1.2   app=svclb-traefik</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_klipper"><a class="anchor" href="#_what_is_klipper"></a>What is klipper ?</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_is_traefik"><a class="anchor" href="#_what_is_traefik"></a>What is Traefik ?</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
