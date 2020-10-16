@@ -1,4 +1,15 @@
 = K3D
+Aurélien Campergue <aurelien.campergue@camptocamp.com>
+:description: This repository contains the result of my tests around the k3d tool, as a documented tutorial.
+:keywords: docker, kubernetes, k3s, k3d, traefik, 
+:sectanchors:
+
+:url-repo: https://github.com/acampergue-camptocamp/k3d_lab.git
+:klipper-url: https://github.com/rancher/klipper-lb
+
+image::github.svg[link="{url-repo}",150,250]
+
+{url-repo}[This repository] contains the result of my tests around the k3d tool, as a documented tutorial.
 
 k3d is a lightweight wrapper to run k3s (Rancher Lab’s minimal Kubernetes distribution) in docker.
 k3d makes it very easy to create single- and multi-node k3s clusters in docker, e.g. for local development on Kubernetes.
